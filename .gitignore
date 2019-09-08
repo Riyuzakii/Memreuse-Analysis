@@ -3,3 +3,7 @@ prog1
 prog2
 prog3
 prog4
+*.out
+
+# Directory for Pin binaries
+obj-intel64
