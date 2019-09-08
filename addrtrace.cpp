@@ -78,14 +78,14 @@ VOID DivideMemAccess(THREADID tid, VOID * addr, UINT32 size) {
     if (((addr_t == next_bdry) && (size_t <= BLOCK_SIZE ))
             || (addr_t + size_t <= next_bdry)) {
         for (;;) {
-            fprintf(trace, "%d  %12lu", tid, addr_t);
+            fprintf(trace, "%d  %12lu\n", tid, addr_t);
             uint64_t stride = INIT_STRIDE;
             while (stride > size_t) {
                 stride = stride / 2;
                 // Something really bad happened
                 if (stride < 1) exit(EXIT_FAILURE);
             }
-            assert((stride <= size_t) && (addr_t + stride <= next_bdry));
+            assert((stride <= size_t) || (addr_t + stride <= next_bdry));
             addr_t = addr_t + stride;
             size_t = size_t - stride;
             if (size_t == 0) break;
@@ -95,7 +95,7 @@ VOID DivideMemAccess(THREADID tid, VOID * addr, UINT32 size) {
         uint64_t max_stride = next_bdry - addr_t;
         size_t = size_t - max_stride; assert(size_t);
         for (;;) {
-            fprintf(trace, "%d  %12lu", tid, addr_t);
+            fprintf(trace, "%d  %12lu\n", tid, addr_t);
             uint64_t stride = INIT_STRIDE;
             while (stride > max_stride) {
                 stride = stride / 2;
@@ -115,7 +115,7 @@ VOID DivideMemAccess(THREADID tid, VOID * addr, UINT32 size) {
         // block. Record this and keep doing so until size_t < BLOCK_SIZE.
         while (size_t >= BLOCK_SIZE) {
             for (int i = 0; i < (BLOCK_SIZE / INIT_STRIDE); i++) {
-                fprintf(trace, "%d  %12lu", tid, addr_t);
+                fprintf(trace, "%d  %12lu\n", tid, addr_t);
                 addr_t = addr_t + INIT_STRIDE;
             }
             size_t = size_t - BLOCK_SIZE;
@@ -124,21 +124,19 @@ VOID DivideMemAccess(THREADID tid, VOID * addr, UINT32 size) {
 
         // Here, repeat the true case of the parent if-statement.
         for (;;) {
-            fprintf(trace, "%d  %12lu", tid, addr_t);
+            fprintf(trace, "%d  %12lu\n", tid, addr_t);
             uint64_t stride = INIT_STRIDE;
             while (stride > size_t) {
                 stride = stride / 2;
                 // Something really bad happened
                 if (stride < 1) exit(EXIT_FAILURE);
             }
-            assert((stride <= size_t) && (addr_t + stride <= next_bdry));
+            assert((stride <= size_t) || (addr_t + stride <= next_bdry));
             addr_t = addr_t + stride;
             size_t = size_t - stride;
             if (size_t == 0) break;
         }
     }
-
-    fprintf(stdout, "%lu %lu\n", addr_t, next_bdry);
 }
 
 // Print a memory read record
