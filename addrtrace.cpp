@@ -32,8 +32,13 @@ END_LEGAL */
  *  This file contains an ISA-portable PIN tool for tracing memory accesses.
  */
 
+#include <assert.h>
+#include <math.h>
 #include <stdio.h>
 #include "pin.H"
+
+#define BLOCK_SIZE   64
+#define INIT_STRIDE   8
 
 
 FILE * trace;
@@ -57,9 +62,83 @@ VOID ThreadFini(THREADID tid, const CONTEXT *ctxt, INT32 code, VOID *v)
     PIN_ReleaseLock(&pinLock);
 }
 
+// Divide x86 memory accesses to atomic machine accesses.
 VOID DivideMemAccess(THREADID tid, VOID * addr, UINT32 size) {
-    uint64_t addr_t = reinterpret_cast<uint64_t> (addr);
-    // TODO: Main Algo
+    uint64_t addr_t = reinterpret_cast <uint64_t> (addr);
+    uint64_t size_t = static_cast <uint64_t> (size);
+    // Try to identify the next block boundary.
+    uint64_t next_bdry = addr_t;
+    uint64_t reminder = next_bdry % BLOCK_SIZE;
+    while (reminder) {
+        next_bdry++;
+        reminder = next_bdry % BLOCK_SIZE;
+    }
+    
+    // Here, we need to check if the total memory access crosses block boundary.
+    if (((addr_t == next_bdry) && (size_t <= BLOCK_SIZE ))
+            || (addr_t + size_t <= next_bdry)) {
+        for (;;) {
+            fprintf(trace, "%d  %12lu", tid, addr_t);
+            uint64_t stride = INIT_STRIDE;
+            while (stride > size_t) {
+                stride = stride / 2;
+                // Something really bad happened
+                if (stride < 1) exit(EXIT_FAILURE);
+            }
+            assert((stride <= size_t) && (addr_t + stride <= next_bdry));
+            addr_t = addr_t + stride;
+            size_t = size_t - stride;
+            if (size_t == 0) break;
+        }
+    } else {    // Memory access crosses block boundary
+        assert((size_t > BLOCK_SIZE) || (addr_t + size_t > next_bdry));
+        uint64_t max_stride = next_bdry - addr_t;
+        size_t = size_t - max_stride; assert(size_t);
+        for (;;) {
+            fprintf(trace, "%d  %12lu", tid, addr_t);
+            uint64_t stride = INIT_STRIDE;
+            while (stride > max_stride) {
+                stride = stride / 2;
+                // Something really bad happened
+                if (stride < 1) exit(EXIT_FAILURE);
+            }
+            assert((stride <= max_stride) && (addr_t + stride <= next_bdry));
+            addr_t = addr_t + stride;
+            max_stride = max_stride - stride;
+            if (max_stride == 0) break;
+        }
+        // We have recorded all accesses pre block boundary. Now do same stuff
+        // for the remaining strides.
+        //
+        // IMP: It's possible that access size is still larger than BLOCK_SIZE
+        // In that case, we'll have clean 8 byte machine accesses within that
+        // block. Record this and keep doing so until size_t < BLOCK_SIZE.
+        while (size_t >= BLOCK_SIZE) {
+            for (int i = 0; i < (BLOCK_SIZE / INIT_STRIDE); i++) {
+                fprintf(trace, "%d  %12lu", tid, addr_t);
+                addr_t = addr_t + INIT_STRIDE;
+            }
+            size_t = size_t - BLOCK_SIZE;
+        }
+        assert(size_t < BLOCK_SIZE);
+
+        // Here, repeat the true case of the parent if-statement.
+        for (;;) {
+            fprintf(trace, "%d  %12lu", tid, addr_t);
+            uint64_t stride = INIT_STRIDE;
+            while (stride > size_t) {
+                stride = stride / 2;
+                // Something really bad happened
+                if (stride < 1) exit(EXIT_FAILURE);
+            }
+            assert((stride <= size_t) && (addr_t + stride <= next_bdry));
+            addr_t = addr_t + stride;
+            size_t = size_t - stride;
+            if (size_t == 0) break;
+        }
+    }
+
+    fprintf(stdout, "%lu %lu\n", addr_t, next_bdry);
 }
 
 // Print a memory read record
@@ -67,8 +146,8 @@ VOID RecordMemRead(THREADID thid, VOID * ip, VOID * addr, UINT32 size)
 {
     PIN_GetLock(&pinLock, thid+1);
     DivideMemAccess(thid, addr, size);
-    fprintf(trace, "READ  :: Thread : %d | Address : %p | Size : %d\n",
-            thid, addr, size);
+    // fprintf(trace, "READ  :: Thread : %d | Address : %p | Size : %d\n",
+    //         thid, addr, size);
     PIN_ReleaseLock(&pinLock);
 }
 
@@ -77,8 +156,8 @@ VOID RecordMemWrite(THREADID thid, VOID * ip, VOID * addr, UINT32 size)
 {
     PIN_GetLock(&pinLock, thid+1);
     DivideMemAccess(thid, addr, size);
-    fprintf(trace, "WRITE :: Thread : %d | Address : %p | Size : %d\n",
-            thid, addr, size);
+    // fprintf(trace, "WRITE :: Thread : %d | Address : %p | Size : %d\n",
+    //         thid, addr, size);
     PIN_ReleaseLock(&pinLock);
 }
 
