@@ -57,16 +57,29 @@ VOID ThreadFini(THREADID tid, const CONTEXT *ctxt, INT32 code, VOID *v)
     PIN_ReleaseLock(&pinLock);
 }
 
+VOID DivideMemAccess(THREADID tid, VOID * addr, UINT32 size) {
+    uint64_t addr_t = reinterpret_cast<uint64_t> (addr);
+    // TODO: Main Algo
+}
+
 // Print a memory read record
-VOID RecordMemRead(VOID * ip, VOID * addr)
+VOID RecordMemRead(THREADID thid, VOID * ip, VOID * addr, UINT32 size)
 {
-    fprintf(trace,"%p: R %p\n", ip, addr);
+    PIN_GetLock(&pinLock, thid+1);
+    DivideMemAccess(thid, addr, size);
+    fprintf(trace, "READ  :: Thread : %d | Address : %p | Size : %d\n",
+            thid, addr, size);
+    PIN_ReleaseLock(&pinLock);
 }
 
 // Print a memory write record
-VOID RecordMemWrite(VOID * ip, VOID * addr)
+VOID RecordMemWrite(THREADID thid, VOID * ip, VOID * addr, UINT32 size)
 {
-    fprintf(trace,"%p: W %p\n", ip, addr);
+    PIN_GetLock(&pinLock, thid+1);
+    DivideMemAccess(thid, addr, size);
+    fprintf(trace, "WRITE :: Thread : %d | Address : %p | Size : %d\n",
+            thid, addr, size);
+    PIN_ReleaseLock(&pinLock);
 }
 
 // Is called for every instruction and instruments reads and writes
@@ -82,12 +95,17 @@ VOID Instruction(INS ins, VOID *v)
     // Iterate over each memory operand of the instruction.
     for (UINT32 memOp = 0; memOp < memOperands; memOp++)
     {
+        // Record the size of x86 memory access to break it down to
+        // individual machine accesses.
+        UINT32 memSize = INS_MemoryOperandSize(ins, memOp);
         if (INS_MemoryOperandIsRead(ins, memOp))
         {
             INS_InsertPredicatedCall(
                 ins, IPOINT_BEFORE, (AFUNPTR)RecordMemRead,
+                IARG_THREAD_ID,
                 IARG_INST_PTR,
                 IARG_MEMORYOP_EA, memOp,
+                IARG_UINT32, memSize,
                 IARG_END);
         }
         // Note that in some architectures a single memory operand can be 
@@ -97,8 +115,10 @@ VOID Instruction(INS ins, VOID *v)
         {
             INS_InsertPredicatedCall(
                 ins, IPOINT_BEFORE, (AFUNPTR)RecordMemWrite,
+                IARG_THREAD_ID,
                 IARG_INST_PTR,
                 IARG_MEMORYOP_EA, memOp,
+                IARG_UINT32, memSize,
                 IARG_END);
         }
     }
