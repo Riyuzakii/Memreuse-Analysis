@@ -2,6 +2,8 @@
 Intel Open Source License 
 
 Copyright (c) 2002-2018 Intel Corporation. All rights reserved.
+Copyright (c) 2019, Aditya Rohan <raditya@iitk.ac.in>
+Copyright (c) 2019, Aniket Pandey <aniketp@iitk.ac.in>
  
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -29,7 +31,10 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 END_LEGAL */
 /*
- *  This file contains an ISA-portable PIN tool for tracing memory accesses.
+ * This file contains an ISA-portable PIN tool for tracing memory accesses.
+ * 
+ * Submitted to:
+ * CS622A: 2019-20 Fall Semester. Assignment 2
  */
 
 #include <assert.h>
