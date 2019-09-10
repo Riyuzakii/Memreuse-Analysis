@@ -18,7 +18,7 @@
 using namespace std;
 namespace fs = std::experimental::filesystem;
 
-typedef unsigned long long int_t;
+typedef long long int_t;
 typedef std::vector <int_t> MyClassSet;
 typedef std::map <int_t, MyClassSet> MyClassSetMap;
 
@@ -82,7 +82,7 @@ Cache::Cache(int num_sets, int num_ways)
 };
 
 int_t Cache::add_block(int_t address) {
-    int set_num = (int) (address) % num_sets_;
+    int set_num = address % num_sets_;
     // Check if a way is free in the set
     for (auto &set : matrix_.at(set_num)) {
         if (set.present) continue;
@@ -107,7 +107,7 @@ int_t Cache::add_block(int_t address) {
 }
 
 bool Cache::check_hit_or_miss(int_t address) {
-    int set_num = (int) (address) % num_sets_;
+    int set_num = address % num_sets_;
     for (auto &block : matrix_.at(set_num)) {
         if ((block.address == address) && (block.present))
             return true;
@@ -116,7 +116,7 @@ bool Cache::check_hit_or_miss(int_t address) {
 }
 
 void Cache::invalidate_block(int_t address) {
-    int set_num = (int) (address) % num_sets_;
+    int set_num = address % num_sets_;
     for (auto &block : matrix_.at(set_num)) {
         if (block.address != address) continue;
         // Found the block; Invalidate it
@@ -128,7 +128,7 @@ void Cache::invalidate_block(int_t address) {
 }
 
 void Cache::update_on_hit(int_t address) {
-    int set_num = (int) (address) % num_sets_;
+    int set_num = address % num_sets_;
     // Move the block to the top of LRU set
     lru_set_.at(set_num).remove(address);
     lru_set_.at(set_num).push_front(address);
@@ -154,7 +154,17 @@ int main(int argc, char const *argv[]) {
              << endl;
         while (infile >> tid >> block) {
             block = block >> BLOCK_OFFSET;
-            maps[block].emplace_back(time);
+            // Simulate the block through 2MB 16-Way cache
+            if (cache->check_hit_or_miss(block)) {
+                (cache->hits)++;
+                cache->update_on_hit(block);
+            } else {
+                (cache->misses)++;
+                cache->add_block(block);
+                maps[block].emplace_back(time);
+            }
+            // Check with Aditya: Whether to increment 'time' for every
+            // retrieved trace instance or just for misses.
             time++;
         }
         // Segregate all blocks into their respective 'distances'
@@ -169,6 +179,8 @@ int main(int argc, char const *argv[]) {
             cout << "Number of " << elem.first << " access distance blocks: "
                  << elem.second << endl;
         }
+        cout << "\n\nNumber of hits: " << cache->hits << "\nNumber of misses: "
+             << cache->misses << endl;
     }
     return 0;
 }
