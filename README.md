@@ -9,3 +9,12 @@ $ git clone git@github.com:Riyuzakii/Memreuse-Analysis.git <Path-to-Pin>/source/
 ```
 
 Compile the target programs, i.e `prog{1, 2, 3, 4}.c` using `./compile.sh`
+
+
+**Number of machine accesses**
+```
+addrtrace1.out   128990938
+addrtrace2.out   2508113
+addrtrace3.out   9531558
+addrtrace4.out   1064400
+```
