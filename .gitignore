@@ -10,3 +10,12 @@ prog4
 
 # Directory for Pin binaries
 obj-intel64
+
+# Latex logs
+report.aux
+report.lof
+report.log
+report.lot
+report.out
+report.synctex.gz
+
