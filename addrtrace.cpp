@@ -229,7 +229,7 @@ INT32 Usage()
 
 int main(int argc, char *argv[])
 {
-    trace = fopen("../output/addrtrace.out", "w");
+    trace = fopen("../traces/addrtrace.out", "w");
     PIN_InitLock(&pinLock);
 
     // Try to initialize pin

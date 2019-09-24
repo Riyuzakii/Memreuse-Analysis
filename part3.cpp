@@ -27,10 +27,10 @@ typedef std::map <int_t, MyClassSet> MyClassSetMap;
 #define NUM_SETS      2048
 
 static string trace_output[4] = {
-    "Q3addtrace3.out",
-    "Q3addtrace4.out",
-    "Q3addtrace2.out",
-    "Q3addtrace1.out",
+    "Q3addrtrace3.out",
+    "Q3addrtrace4.out",
+    "Q3addrtrace2.out",
+    "Q3addrtrace1.out",
 };
 
 struct cell {
@@ -146,7 +146,7 @@ void Cache::update_on_hit(int_t address) {
 
 int main(int argc, char const *argv[]) {
     int_t tid, block, time = 0;
-    long long N = 0, f_dist = 0, fn = 0;
+    int_t num_dist = 0, f_dist = 0, fn = 0;
     string folder = "traces";
     // string tracefile = argv[1];
     for (const auto& tracefile : fs::directory_iterator(folder)) {
@@ -173,15 +173,13 @@ int main(int argc, char const *argv[]) {
                 maps[block].emplace_back(time);
                 time++;
             }
-            // Check with Aditya: Whether to increment 'time' for every
-            // retrieved trace instance or just for misses.
         }
         // Segregate all blocks into their respective 'distances'
         for(auto& elem : maps) {
             for (int i = 0; i < elem.second.size() - 1; ++i) {
                 int_t cd = elem.second[i+1] - elem.second[i];
                 distance[cd]++;
-                N++;
+                num_dist++;
             }
         }
         // Result Compilation
@@ -189,11 +187,12 @@ int main(int argc, char const *argv[]) {
         myfile.open (trace_output[fn]);
         for(auto& elem : distance) {
             f_dist += elem.second;
-            myfile << elem.first << ": "<<  (float)f_dist/(float)N << endl;
+            myfile << elem.first << ": " << (float) f_dist/(float)num_dist
+                   << endl;
         }
         myfile.close();
-        cout << "\n\nNumber of hits: " << cache->hits << "\nNumber of misses: "
-             << cache->misses << endl;
+        cout << "\nNumber of hits: " << cache->hits << "\nNumber of misses: "
+             << cache->misses << "\n\n";
         fn++;
     }
     return 0;

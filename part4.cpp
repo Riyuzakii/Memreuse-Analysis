@@ -22,7 +22,7 @@ typedef unsigned long long int_t;
 
 int main(int argc, char *argv[]) {
     int_t tid, block;
-    string line, folder = "output";
+    string line, folder = "traces";
     for (const auto& tracefile : fs::directory_iterator(folder)) {
         map <int_t, unordered_set<int> > matrix;
         map <int, int> profile;
