@@ -26,27 +26,29 @@ prog4.c & 1061544   & 1061507   &	1061492   & 1061525   & \textbf{1061515} \\
 
 
 \subsection*{PART 4: Sharing profile analysis}
+The sharing profile for each of the 4 target programs is given below. The trace corresponding to
+the highlighted values in part1 were selected for the result analysis.
 \begin{table}[h]
 \centering
 \begin{tabular}{ |c|c|c|c|c| } 
 \hline
 & \textbf{prog1.c} & \textbf{prog2.c} & \textbf{prog3.c} & \textbf{prog4.c} \\
 \hline
-Private &	5259461 &	5398166 &	3951778 &	1446388 \\
+Private &	388    & 384   & 386   & 8573 \\
 \hline
-2-Shared &	11574350 &	3036461 &	1663059 &	1373402 \\
+2-Shared &	63     & 8255  & 56	& 57403 \\
 \hline
-3-Shared &	3094660 &	336851 &	166320 &	170531 \\
+3-Shared &	1872   & 16384 & 0     & 6 \\
 \hline
-4-Shared &	1378895 &	969678 &	627532 &	342146 \\
+4-Shared &	32456  & 40958 & 1     & 0 \\
 \hline
-5-Shared &	1378895 &	969678 &	627532 &	342146 \\
+5-Shared &	143251 & 5     & 1     & 0 \\
 \hline
-6-Shared &	1378895 &	969678 &	627532 &	342146 \\
+6-Shared &	244970 & 0     & 0     & 0 \\
 \hline
-7-Shared &	1378895 &	969678 &	627532 &	342146 \\
+7-Shared &	173831 & 0     & 0		& 1 \\
 \hline
-8-Shared &	1378895 &	969678 &	627532 &	342146 \\
+8-Shared &	124527 & 9     & 65545	& 10 \\
 \hline
 \end{tabular}
 \caption{Sharing profile analyis for 8 threads}
@@ -56,3 +58,16 @@ Private &	5259461 &	5398166 &	3951778 &	1446388 \\
 \subsection*{PART 2: Access distance analysis}
 
 \subsection*{PART 3: Access distance filtered by LRU cache}
+\begin{table}[h]
+\centering
+\begin{tabular}{ |c|c|c|c|c| } 
+\hline
+& \textbf{prog1.c} & \textbf{prog2.c} & \textbf{prog3.c} & \textbf{prog4.c} \\
+\hline
+\textbf{Hits}   & 122297455 & 2295505 & 8862896 & 930888 \\
+\hline
+\textbf{Misses} & 6690582   & 229068  & 645364  & 130626 \\
+\hline
+\end{tabular}
+\caption{Result of modelling a 2MB 16-Way cache on the traces}
+\end{table}
