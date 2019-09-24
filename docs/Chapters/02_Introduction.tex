@@ -1,11 +1,6 @@
 
 % Introduction
 
-A program to simulate L1 cache misses through L2, L3 cache hierarchy for various applications. The
-simulator is programmed for 3 different inclusion policies, i.e \textit{Inclusive}, \textit{Exclusive} \& \textit{Non-Inclusive Non-Exclusive} (\textit{NINE}).
-
-\begin{itemize}
-	\item \textbf{Part 1:} 8-Way L2 cache (LRU), 16-Way L3 cache (LRU)
-	\item \textbf{Part 2(a):} 8-Way L2 cache (LRU), Fully-Associative L3 cache (LRU)
-	\item \textbf{Part 2(b):} 8-Way L2 cache (LRU), Fully-Associative L3 cache (MIN)
-\end{itemize}
+In this assignment, we use PIN tool to instrument a set of parallel programs and collect
+thread-wise memory access trace and break it down to x86 machine accesses. Then with the resultin trace,
+we analyze the sharing profile and memory reuse for the given parallel programs.

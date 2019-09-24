@@ -10,6 +10,7 @@ prog4
 *.out
 
 # Directory for Pin binaries
+obj
 obj-intel64
 
 # Latex logs
