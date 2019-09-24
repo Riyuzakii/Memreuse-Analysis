@@ -26,6 +26,13 @@ typedef std::map <int_t, MyClassSet> MyClassSetMap;
 #define NUM_WAYS      16
 #define NUM_SETS      2048
 
+static trace_output[4] = {
+    "Q3addtrace1.out",
+    "Q3addtrace2.out",
+    "Q3addtrace3.out",
+    "Q3addtrace4.out",
+};
+
 struct cell {
     bool present;	// Valid bit
     int_t address;	// Memory address
@@ -139,7 +146,9 @@ void Cache::update_on_hit(int_t address) {
 
 int main(int argc, char const *argv[]) {
     int_t tid, block, time = 0;
-    string folder = "output";
+    long long N = 0, f_dist = 0;
+    string folder = "traces";
+    // string tracefile = argv[1];
     for (const auto& tracefile : fs::directory_iterator(folder)) {
         std::ifstream infile (tracefile.path());
         if (!infile.is_open()) {
@@ -162,23 +171,27 @@ int main(int argc, char const *argv[]) {
                 (cache->misses)++;
                 cache->add_block(block);
                 maps[block].emplace_back(time);
+                time++;
             }
             // Check with Aditya: Whether to increment 'time' for every
             // retrieved trace instance or just for misses.
-            time++;
         }
         // Segregate all blocks into their respective 'distances'
         for(auto& elem : maps) {
             for (int i = 0; i < elem.second.size() - 1; ++i) {
                 int_t cd = elem.second[i+1] - elem.second[i];
                 distance[cd]++;
+                N++;
             }
         }
         // Result Compilation
+        ofstream myfile;
+        myfile.open ("example.txt");
         for(auto& elem : distance) {
-            cout << "Number of " << elem.first << " access distance blocks: "
-                 << elem.second << endl;
+            f_dist += elem.second;
+            myfile << elem.first << ": "<<  (float)f_dist/(float)N << endl;
         }
+        myfile.close();
         cout << "\n\nNumber of hits: " << cache->hits << "\nNumber of misses: "
              << cache->misses << endl;
     }
