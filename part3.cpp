@@ -26,7 +26,7 @@ typedef std::map <int_t, MyClassSet> MyClassSetMap;
 #define NUM_WAYS      16
 #define NUM_SETS      2048
 
-static trace_output[4] = {
+static string trace_output[4] = {
     "Q3addtrace1.out",
     "Q3addtrace2.out",
     "Q3addtrace3.out",
