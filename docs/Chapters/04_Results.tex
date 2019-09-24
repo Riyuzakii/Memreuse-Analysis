@@ -4,19 +4,21 @@
 \newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
 
 \subsection*{PART 1: Collection of machine-access traces}
+The results were varying across individual runs. Hence, we have collected 5 results for a 
+particular program and picked \textit{addrtrace.out} corresponding to the middle value (highlighted).
 \begin{table}[h]
 \centering
 \begin{tabular}{ |c|c|c|c|c|c| } 
 \hline
 \textbf{Programs} & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5}\\
 \hline
-prog1.c &	5259461 &	5398166 &	3951778 &	1446388 &	1446388 \\
+prog1.c & \textbf{128988038} & 128988149 & 128987956 & 128988046 & 128987901 \\
 \hline
-prog2.c &	11574350 &	3036461 &	1663059 &	1373402 &	1446388 \\
+prog2.c & 2528955   & 2513452   &	2521172   & \textbf{2524574}   & 2532314 \\
 \hline
-prog3.c &	3094660 &	336851 &	166320 &	170531 &	1446388 \\
+prog3.c & \textbf{9508261}   & 9510696   &	9501049   & 9497081   & 9521463 \\
 \hline
-prog4.c &	1378895 &	969678 &	627532 &	342146 &	1446388 \\
+prog4.c & 1061544   & 1061507   &	1061492   & 1061525   & \textbf{1061515} \\
 \hline
 \end{tabular}
 \caption{Machine accesses count across 5 runs}
