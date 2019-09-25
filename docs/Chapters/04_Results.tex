@@ -55,7 +55,7 @@ Private &	388    & 384   & 386   & 8573 \\
 \end{table}
 
 % \newpage
-\subsection*{PART 2 and 3: Access distance analysis}
+\subsection*{PART 2 and 3: Access distance analysis (Normal vs Cache)}
 
 
 \begin{figure}[H]
@@ -63,33 +63,33 @@ Private &	388    & 384   & 386   & 8573 \\
 \begin{subfigure}{.48\textwidth}
   \centering
   \includegraphics[width=\linewidth]{Q2addtrace1.pdf}
-  \caption{Part2: Cumulative distance function for prog1.c}
+  \caption{Part2: CDF of access distance for prog1.c}
   \label{fig:sub1}
 \end{subfigure}%
 \hspace{2mm}
 \begin{subfigure}{.465\textwidth}
   \centering
   \includegraphics[width=\linewidth]{Q3addtrace1.pdf}
-  \caption{Part3: Cumulative distance function for misses of prog1.c}
+  \caption{Part3: CDF of access distance for misses of prog1.c}
   \label{fig:sub2}
 \end{subfigure}
-\caption{A comparison between the complete machine access trace and missed machine access trace for prog1.c}
+\caption{A comparison between the complete machine access trace and missed machine access trace for \textbf{prog1.c}}
 \label{fig:test1}
-\vspace{0.1in}
+\vspace{0.8in}
 \begin{subfigure}{.48\textwidth}
   \centering
   \includegraphics[width=\linewidth]{Q2addtrace2.pdf}
-  \caption{Part2: Cumulative distance function for prog2.c}
+  \caption{Part2: CDF of access distance for prog2.c}
   \label{fig:sub3}
 \end{subfigure}%
 \hspace{2mm}
 \begin{subfigure}{.465\textwidth}
   \centering
   \includegraphics[width=\linewidth]{Q3addtrace2.pdf}
-  \caption{Part3: Cumulative distance function for misses of prog2.c}
+  \caption{Part3: CDF of access distance for misses of prog2.c}
   \label{fig:sub4}
 \end{subfigure}
-\caption{A comparison between the complete machine access trace and missed machine access trace for prog2.c}
+\caption{A comparison between the complete machine access trace and missed machine access trace for \textbf{prog2.c}}
 \label{fig:test2}
 \end{figure}
 
@@ -100,41 +100,41 @@ Private &	388    & 384   & 386   & 8573 \\
 \begin{subfigure}{.48\textwidth}
   \centering
   \includegraphics[width=\linewidth]{Q2addtrace3.pdf}
-  \caption{Part2: Cumulative distance function for prog3.c}
+  \caption{Part2: CDF of access distance for prog3.c}
   \label{fig:3sub1}
 \end{subfigure}%\hspace{2mm}
 \hspace{2mm}
 \begin{subfigure}{.465\textwidth}
   \centering
   \includegraphics[width=\linewidth]{Q3addtrace3.pdf}
-  \caption{Part3: Cumulative distance function for misses of prog3.c}
+  \caption{Part3: CDF of access distance for misses of prog3.c}
   \label{fig:3sub2}
 \end{subfigure}
-\caption{A comparison between the complete machine access trace and missed machine access trace for prog3.c}
+\caption{A comparison between the complete machine access trace and missed machine access trace for \textbf{prog3.c}}
 \label{fig:test3}
-\vspace{0.1in}
+\vspace{0.8in}
 \begin{subfigure}{.48\textwidth}
   \centering
   \includegraphics[width=\linewidth]{Q2addtrace4.pdf}
-  \caption{Part2: Cumulative distance function for prog4.c}
+  \caption{Part2: CDF of access distance for prog4.c}
   \label{fig:3sub3}
 \end{subfigure}%
 \hspace{2mm}
 \begin{subfigure}{.465\textwidth}
   \centering
   \includegraphics[width=\linewidth]{Q3addtrace4.pdf}
-  \caption{Part3: Cumulative distance function for misses of prog4.c}
+  \caption{Part3: CDF of access distance for misses of prog4.c}
   \label{fig:3sub4}
 \end{subfigure}
-\caption{A comparison between the complete machine access trace and missed machine access trace for prog4.c}
+\caption{A comparison between the complete machine access trace and missed machine access trace for \textbf{prog4.c}}
 \label{fig:test4}
 \end{figure}
 
 
 \newpage
 \subsection*{PART 3: Hits and Misses}
-The cumulative distribution function for misses in counted specifically against the misses after
-modelling the single-level cache to the traces.
+The cumulative distribution function for part-3 is counted specifically against the misses after
+modelling the single-level cache to the obtained traces.
 \begin{table}[h]
 \centering
 \begin{tabular}{ |c|c|c|c|c| } 
@@ -146,5 +146,5 @@ modelling the single-level cache to the traces.
 \textbf{Misses} & 6690582   & 229068  & 645364  & 130626 \\
 \hline
 \end{tabular}
-\caption{Result of modelling a 2MB 16-Way cache on the traces}
+\caption{Result of modelling a 2MB 16-Way Cache on the traces}
 \end{table}
