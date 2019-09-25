@@ -54,24 +54,88 @@ Private &	388    & 384   & 386   & 8573 \\
 \caption{Sharing profile analyis for 8 threads}
 \end{table}
 
+% \newpage
+\subsection*{PART 2 and 3: Access distance analysis}
+
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{Q2addtrace1.pdf}
+  \caption{Part2: Cumulative distance function for prog1.c}
+  \label{fig:sub1}
+\end{subfigure}%
+\hspace{2mm}
+\begin{subfigure}{.465\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{Q3addtrace1.pdf}
+  \caption{Part3: Cumulative distance function for misses of prog1.c}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{A comparison between the complete machine access trace and missed machine access trace for prog1.c}
+\label{fig:test1}
+\vspace{0.1in}
+\begin{subfigure}{.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{Q2addtrace2.pdf}
+  \caption{Part2: Cumulative distance function for prog2.c}
+  \label{fig:sub3}
+\end{subfigure}%
+\hspace{2mm}
+\begin{subfigure}{.465\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{Q3addtrace2.pdf}
+  \caption{Part3: Cumulative distance function for misses of prog2.c}
+  \label{fig:sub4}
+\end{subfigure}
+\caption{A comparison between the complete machine access trace and missed machine access trace for prog2.c}
+\label{fig:test2}
+\end{figure}
+
+% \newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{Q2addtrace3.pdf}
+  \caption{Part2: Cumulative distance function for prog3.c}
+  \label{fig:3sub1}
+\end{subfigure}%\hspace{2mm}
+\hspace{2mm}
+\begin{subfigure}{.465\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{Q3addtrace3.pdf}
+  \caption{Part3: Cumulative distance function for misses of prog3.c}
+  \label{fig:3sub2}
+\end{subfigure}
+\caption{A comparison between the complete machine access trace and missed machine access trace for prog3.c}
+\label{fig:test3}
+\vspace{0.1in}
+\begin{subfigure}{.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{Q2addtrace4.pdf}
+  \caption{Part2: Cumulative distance function for prog4.c}
+  \label{fig:3sub3}
+\end{subfigure}%
+\hspace{2mm}
+\begin{subfigure}{.465\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{Q3addtrace4.pdf}
+  \caption{Part3: Cumulative distance function for misses of prog4.c}
+  \label{fig:3sub4}
+\end{subfigure}
+\caption{A comparison between the complete machine access trace and missed machine access trace for prog4.c}
+\label{fig:test4}
+\end{figure}
+
+
 \newpage
-\subsection*{PART 2: Access distance analysis}
-\includegraphics[width=15cm,height=10cm]{Q2addtrace1.pdf} \\
-\includegraphics[width=15cm,height=10cm]{Q2addtrace2.pdf} \\
-\includegraphics[width=15cm,height=10cm]{Q2addtrace3.pdf} \\
-\includegraphics[width=15cm,height=10cm]{Q2addtrace4.pdf} \\
-
-
-\subsection*{PART 3: Access distance filtered by LRU cache}
-\includegraphics[width=15cm,height=10cm]{Q3addtrace1.pdf} \\
-\includegraphics[width=15cm,height=10cm]{Q3addtrace2.pdf} \\
-\includegraphics[width=15cm,height=10cm]{Q3addtrace3.pdf} \\
-\includegraphics[width=15cm,height=10cm]{Q3addtrace4.pdf} \\
-
-\newpage
+\subsection*{PART 3: Hits and Misses}
 The cumulative distribution function for misses in counted specifically against the misses after
 modelling the single-level cache to the traces.
-\begin{table}[t]
+\begin{table}[h]
 \centering
 \begin{tabular}{ |c|c|c|c|c| } 
 \hline
