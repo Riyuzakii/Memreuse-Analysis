@@ -1,5 +1,21 @@
-# Memreuse-Analysis
-Analysis of memory reuse and sharing profiles of parallel programs
+# Memory Reuse and Sharing Profile Analysis
+Discrete analysis of memory reuse and sharing profiles of a set of parallel programs.
+Memory accesses are obtained through PIN's `IARG_MEMORYOP_EA` macro, which in turn
+is broken down into individual x86 machine accesses according to specified rules.
+
+The analysis tool is developed as a part of the Assignment-2 for the course
+Advanced Computer Architecture **(CS622A)**,<br> Fall Semester - 2019, 
+instructed by [Prof. Mainak Chaudhury](https://www.cse.iitk.ac.in/users/mainakc/).
+
+The results of the simulation are compiled [here](./result/README.md).
+And the project report can be found [here](./docs/report.pdf).
+
+### Group Members (G16)
+
+| __Name__ | __Email__ | __Roll__ |
+|-------------|------------|------------|
+| Aditya Rohan | [raditya@iitk.ac.in](mailto:raditya@iitk.ac.in) | 160053 |
+| Aniket Pandey | [aniketp@iitk.ac.in](mailto:aniketp@iitk.ac.in) | 160113 |
 
 ### Setup and Build Instructions
 Clone the repository in `source/tools/CS622Assignment` path of `pin-3.11` tool.
@@ -8,38 +24,30 @@ Clone the repository in `source/tools/CS622Assignment` path of `pin-3.11` tool.
 $ git clone git@github.com:Riyuzakii/Memreuse-Analysis.git <Path-to-Pin>/source/tools/CS622Assignment
 ```
 
-Compile the target programs, i.e `prog{1, 2, 3, 4}.c` using `./compile.sh`
+Compiling and running the tool is easy. Like, really easy!
 
+The root folder of the project contains a Makefile which is not something we're
+allowed to touch! As a result, each of the following commands need to be executed
+from within the `scripts` directory.
 
-**Number of machine accesses**
+``` bash
+ > cd scripts
+ > make setup          # Compiles instrumentation, analysis and target programs
 ```
-addrtrace1.out   128990938
-addrtrace2.out   2508113
-addrtrace3.out   9531558
-addrtrace4.out   1064400
+<hr>
+
+**Part 1**: Collecting machine access trace
+
+``` bash
+ > make run PART=1 PROG=x                   # Collects access trace for progx.c
 ```
+where `x ∈  {1, 2, 3, 4}`. This will create `addrtrace.out` inside the `result`
+directory. **Note**: All subsequent parts will use this trace and running the above
+command with `PROG=y` where `y ≠ x` will overwrite the trace.
 
+**Part 2, 3, 4**: Analysis of the obtained trace
 
-  128988038 output/addtrace1.1.out
-  128988149 output/addtrace1.2.out
-  128987956 output/addtrace1.3.out
-  128988046 output/addtrace1.4.out
-  128987901 output/addtrace1.5.out
-
-  2528955 output/addtrace2.1.out
-  2513452 output/addtrace2.2.out
-  2521172 output/addtrace2.3.out
-  2524574 output/addtrace2.4.out
-  2532314 output/addtrace2.5.out
-
-  9508261 output/addtrace3.1.out
-  9510696 output/addtrace3.2.out
-  9501049 output/addtrace3.3.out
-  9497081 output/addtrace3.4.out
-  9521463 output/addtrace3.5.out
-
-  1061544 output/addtrace4.1.out
-  1061507 output/addtrace4.2.out
-  1061492 output/addtrace4.3.out
-  1061525 output/addtrace4.4.out
-  1061515 output/addtrace4.5.out
+``` bash
+ > make run PART=x
+```
+where `x ∈  {2, 3, 4}`. This will use the trace generated above.
