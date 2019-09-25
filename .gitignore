@@ -12,6 +12,7 @@ prog4
 obj
 obj-intel64
 traces
+result
 
 # Latex logs
 report.aux

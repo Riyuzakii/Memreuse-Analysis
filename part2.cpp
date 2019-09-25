@@ -21,17 +21,10 @@ typedef std::map <int_t, MyClassSet> MyClassSetMap;
 
 #define BLOCK_OFFSET 6
 
-static string trace_output[4] = {
-    "Q2addrtrace3.out",
-    "Q2addrtrace4.out",
-    "Q2addrtrace2.out",
-    "Q2addrtrace1.out",
-};
-
 int main(int argc, char const *argv[]) {
     int_t tid, block, time = 0;
-    int_t num_dist = 0, f_dist = 0, fn = 0;
-    string folder = "traces";
+    int_t num_dist = 0, f_dist = 0;
+    string folder = "traces", output = "result/part2-cdf.out";
     for (const auto& tracefile : fs::directory_iterator(folder)) {
         std::ifstream infile (tracefile.path());
         if (!infile.is_open()) {
@@ -57,14 +50,13 @@ int main(int argc, char const *argv[]) {
         }
         // Result Compilation
         ofstream myfile;
-        myfile.open (trace_output[fn]);
+        myfile.open (output);
         for(auto& elem : distance) {
             f_dist += elem.second;
             myfile << elem.first << ": " << (float) f_dist/(float)num_dist
                    << endl;
         }
         myfile.close();
-        fn++;
     }
     return 0;
 }

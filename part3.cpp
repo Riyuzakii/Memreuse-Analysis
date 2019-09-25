@@ -26,13 +26,6 @@ typedef std::map <int_t, MyClassSet> MyClassSetMap;
 #define NUM_WAYS      16
 #define NUM_SETS      2048
 
-static string trace_output[4] = {
-    "Q3addrtrace3.out",
-    "Q3addrtrace4.out",
-    "Q3addrtrace2.out",
-    "Q3addrtrace1.out",
-};
-
 struct cell {
     bool present;   // Valid bit
     int_t address;  // Memory address
@@ -147,8 +140,7 @@ void Cache::update_on_hit(int_t address) {
 int main(int argc, char const *argv[]) {
     int_t tid, block, time = 0;
     int_t num_dist = 0, f_dist = 0, fn = 0;
-    string folder = "traces";
-    // string tracefile = argv[1];
+    string folder = "traces", output = "result/part3-cdf-lru-misses.out";
     for (const auto& tracefile : fs::directory_iterator(folder)) {
         std::ifstream infile (tracefile.path());
         if (!infile.is_open()) {
@@ -184,7 +176,7 @@ int main(int argc, char const *argv[]) {
         }
         // Result Compilation
         ofstream myfile;
-        myfile.open (trace_output[fn]);
+        myfile.open (output);
         for(auto& elem : distance) {
             f_dist += elem.second;
             myfile << elem.first << ": " << (float) f_dist/(float)num_dist
@@ -193,7 +185,6 @@ int main(int argc, char const *argv[]) {
         myfile.close();
         cout << "\nNumber of hits: " << cache->hits << "\nNumber of misses: "
              << cache->misses << "\n\n";
-        fn++;
     }
     return 0;
 }
