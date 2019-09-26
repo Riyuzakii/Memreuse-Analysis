@@ -1,41 +1,25 @@
 % Discussions & Conclusion
-    Following are some of the observations on the simulation results.
-\subsection{Part 1}
-\subsubsection{L2 Hits/Misses (Exclusive) == L2 Hits/Misses (NINE)}
-This is observed because at any point in time, the addresses that are present in case of Exclusive 
-policy are same as that of NINE, albeit in different configuration. We can analyze all 
-possibilities to prove this:
-\begin{itemize}
-	\item \textbf{L2 Hit:} Nothing changes here.
-	\item \textbf{L3 Hit:} The block gets added to L2 Cache. Although the block is invalidated from L3 in exclusive case.
-	\item \textbf{L3 Miss:} The block is brought from memory and added to both L2 and L3 cache.
-\end{itemize}
-Hence, in all the cases, if the configuration is same after \textit{kth} steps, it will be same 
-after \textit{(k+1)th} step.
 
-\subsubsection{L3 Misses: Inclusive $ >(\approx)$ NINE $>>$ Exclusive}
-At any given point, L3 cache in case of Exclusive policy will have most absolute space (due to 
-non-similarity of data in L2 and L3). This explains why L3 misses in Exclusive are significantly 
-lesser.\\
-There isn't much difference in L3 misses for Inclusive and NINE cases, although Inclusive is 
-slighly more. This can be attributed to the fact that eviction from L3 also evicts from L2 for 
-Inclusive policy, which is not the case with NINE. So, an access to a block evicted from L3 would
-encounter a hit in L2 for NINE but would unnecessarily miss in both L2, L3 in Inclusive case.
-
-\subsubsection{L2 Misses: Inclusive $>$ Exclusive == NINE}
-This is a serious problem with Inclusive policy, as mentioned in problem statement. If a block 
-recieves constant hits in L2 cache, its rank in the LRU indexing will be quite high. As a result,
-the block will normally never be evicted from L2. But its age in L3 will drop significantly and
- might even become victim to an eviction. Following the Inclusive policy, it will also have to be
-removed from L2 which would unnecessarily increase L2 misses.
-
-\subsection{Part 2}
-\subsubsection{Method of categorizing FA L3 misses}
-\textbf{Cold:} Number of unique block references.\\
-\textbf{Capacity:} FA-L3 misses - Cold misses.\\
-\textbf{Conflict:} 16-way L3 misses - FA-L3 misses.
+The obtained plots of cumulative distribution function of access distances for \textit{prog\{1, 2, 3, 4\}.c} show subtle yet noticeable differences when taken the original trace and after modelling through 2MB 16-way single level cache and focussing only on miss traces.
 
 \begin{enumerate}
-	\item Number of capacity misses for LRU eviction policy are more than that of Belady's policy since Belady is the most optimal solution for block replacement.
-	\item Number of conflict misses for \textit{sphinx3} trace are negative (-179886). For some uncommon cases, the approach of calculating conflict misses from cold and capacity of fully-associative cache can result in a negative number \cite{solihin2015fundamentals}.
+	\item The cdf-plots for original trace have uneven slope while the cdf-plots for miss traces shows a 
+	proper \textit{sigmoidal} curve, which is generally seen for \textit{(Gaussian)}\textit{ Normal distribution}. 
+	This implies even if the program has uneven access pattern, the hit/miss pattern solely depends on cache 
+	specifications and is more-or-less similar for any program, on a given trace.
+	
+	\item The initial slope of cdf-plot for miss trace is \textit{zero} and increase gradually. While for the
+	original plots, there is a sudden increase initially which evens out in the end. This can be explained
+	due to \textit{temporal locality} of accesses, where programs access nearby elements quickly in a short
+	duration which results in high number of low-access-distance patterns.
+	
+	\item The slope for cdf-plots of miss traces starts out at \textit{zero} because it is expected that for
+	a reasonable cache specification, low-access-distance for a block will generally result in a hit. That is,
+	misses will be observed for blocks with high-access-distance as the block might get evicted, following
+	the eviction policies like LRU.
+	
+	\item The cdf-plot for miss traces show a sudden jump midway (observed in Gaussian curves). This can be
+	attributed to the fact that there is a certain limit (e.g $6 \times 10^{4}$) beyond which the cache 
+	capacity is exceeded and we see a large number of misses. This lets us know about the critical access
+	distance of the blocks and that accesses below it have a greater chance of registering a hit.
 \end{enumerate}
