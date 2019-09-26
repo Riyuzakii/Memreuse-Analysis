@@ -34,7 +34,7 @@ part4: ../part4.cpp
 	$(CC) -o ../obj/$@ $< $(CXXFLAGS)
 
 clean:
-	rm -rf ../obj ../obj-intel64 ../part2 ../part3 ../part4
+	rm -rf ../obj ../obj-intel64
 
 cleanall: clean
-	rm -rf ../traces
+	rm -rf ../traces ../result
